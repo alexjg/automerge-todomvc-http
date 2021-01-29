@@ -19,7 +19,8 @@ Every implementation in this application is syncing a document that is expected 
     "todos": [
         {
             "value": "<some descriptive string>",
-            "complete": false
+            "completed": false,
+            "id": "<some string>"
         }
     ]
 }
