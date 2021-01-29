@@ -6,10 +6,10 @@ import { Peers } from "./Peers"
 export const App = () => {
   const props: AutomergeTodosHooks = useAutomergeTodos();
   return (
-    <div>
-      <Peers onFetchUrl={props.loadRemoteTodos} onPushToUrl={props.pushTodosToRemote}/>
+    <div className="container">
       <Todos {...props}>
       </Todos>
+      <Peers onFetchUrl={props.loadRemoteTodos} onPushToUrl={props.pushTodosToRemote}/>
     </div>
   );
 };

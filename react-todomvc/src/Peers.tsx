@@ -29,7 +29,7 @@ export function Peers({onFetchUrl, onPushToUrl}: PeersProps){
     return (<div className="peers">
         <h1>Peers</h1>
         <input
-          className="new-todo"
+          className="new-peer"
           placeholder="Peer URL"
           autoFocus
           onKeyPress={onNewPeerUrl_enter}
@@ -48,8 +48,13 @@ type PeerProps = {
 
 export function Peer({peer, onFetchPressed, onPushPressed}: PeerProps){
   return (<div className="peer">
-    <p>{peer.url}</p>
-    <div className="controls">
+    <div className="peer-url">
+        <p>URL:</p>
+        <div className="url-container">
+            <p className="url">{peer.url}</p>
+        </div>
+    </div>
+    <div className="peer-controls">
       <button onClick={() => onFetchPressed(peer.url)}>Fetch</button>
       <button onClick={() => onPushPressed(peer.url)}>Push</button>
     </div>
