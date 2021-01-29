@@ -1,0 +1,54 @@
+{
+  "name": "react-todomvc",
+  "author": "swyx",
+  "devDependencies": {
+    "@types/babel__core": "^7.1.12",
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "parcel": "^1.12.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.7"
+  },
+  "browserslist": [ "last 2 Firefox versions", "last 2 Chrome versions" ],
+  "dependencies": {
+    "@types/classnames": "^2.2.10",
+    "automerge": "git+https://@github.com/automerge/automerge.git#performance",
+    "classnames": "^2.2.6"
+  },
+  "version": "0.0.7",
+  "license": "MIT",
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "description": "TodoMVC example using automerge as a backend",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sw-yx/react-todomvc.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/sw-yx/react-todomvc/issues"
+  },
+  "homepage": "https://github.com/sw-yx/react-todomvc#readme"
+}
