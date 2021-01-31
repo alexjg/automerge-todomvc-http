@@ -58,23 +58,36 @@ class AutomergeTodos {
 
   async clearCompletedTodos(): Promise<AutomergeTodos> {
     const newDoc = automerge.change(this._doc, doc => {
-      doc.todos = this._doc.todos.filter(t => !t.completed)
+      let i = 0;
+      let numTodos = doc.todos.length
+      while (i < numTodos) {
+          const todo = doc.todos[i]
+          if (todo.completed) {
+              delete doc.todos[i]
+              numTodos -= 1
+          } else {
+              i++
+          }
+      }
     })
     return new AutomergeTodos(newDoc)
   }
 
   async applyChanges(changes: Uint8Array): Promise<AutomergeTodos> {
-    const newDoc = automerge.applyChanges(this._doc, [changes])
+    const otherDoc = automerge.load(changes)
+    const otherChanges = automerge.getAllChanges(otherDoc)
+    const newDoc = automerge.applyChanges(this._doc, otherChanges)
     return new AutomergeTodos(newDoc)
   }
 
   getChanges(): Uint8Array {
-    const changes = automerge.getAllChanges(this._doc)
-    const flatNumberArray = changes.reduce<number[]>((acc, curr) => {
-      acc.push(...curr);
-      return acc
-    }, [])
-    return new Uint8Array(flatNumberArray)
+    //const changes = automerge.getAllChanges(this._doc)
+    //const flatNumberArray = changes.reduce<number[]>((acc, curr) => {
+      //acc.push(...curr);
+      //return acc
+    //}, [])
+    //return new Uint8Array(flatNumberArray)
+    return automerge.save(this._doc)
   }
 }
 
@@ -103,7 +116,13 @@ export function useAutomergeTodos(): AutomergeTodosHooks {
     },
     pushTodosToRemote: async (url: string) => {
       const changes = todoDoc.getChanges()
-      const response = await fetch(url, {body: changes.buffer, method: "post"})
+      const response = await fetch(url, {
+        body: changes,
+        method: "post",
+        headers: {
+          "Content-Type": "application/octet-stream",
+        }
+      })
       console.log(response)
     }
   }

@@ -6,7 +6,7 @@ edition = "2018"
 license = "GPL-3.0+"
 
 [dependencies]
-automerge = {  git = "https://github.com/automerge/automerge-rs", rev = "24dcd9c1e646232850a9a422a9598ff18c350734" }
+automerge = {  git = "https://github.com/automerge/automerge-rs", rev = "a28ae6edb6674a12917a5cbe75ab8a385ca78513" }
 uuid = { version = "0.5.1" , features = ["v4"] }
 vgtk = "0.3.0"
 strum_macros = "0.20"

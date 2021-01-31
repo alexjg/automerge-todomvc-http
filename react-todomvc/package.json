@@ -11,7 +11,10 @@
     "tslib": "^2.0.0",
     "typescript": "^3.9.7"
   },
-  "browserslist": [ "last 2 Firefox versions", "last 2 Chrome versions" ],
+  "browserslist": [
+    "last 2 Firefox versions",
+    "last 2 Chrome versions"
+  ],
   "dependencies": {
     "@types/classnames": "^2.2.10",
     "automerge": "git+https://@github.com/automerge/automerge.git#performance",
@@ -26,7 +29,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "parcel watch index.html"
+    "start": "parcel serve index.html"
   },
   "peerDependencies": {
     "react": ">=16"

@@ -11,7 +11,7 @@ type PeersProps = {
 
 
 export function Peers({onFetchUrl, onPushToUrl}: PeersProps){
-    const [peers, setPeers] = React.useState<Peer[]>([{url: "http://localhost:5000/browser1"}])
+    const [peers, setPeers] = React.useState<Peer[]>([])
 
     const addPeer = (url: string) => {
       const newPeers = Array.from(peers)

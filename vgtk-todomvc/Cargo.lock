@@ -103,7 +103,7 @@ checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
 [[package]]
 name = "automerge"
 version = "0.0.2"
-source = "git+https://github.com/automerge/automerge-rs?rev=24dcd9c1e646232850a9a422a9598ff18c350734#24dcd9c1e646232850a9a422a9598ff18c350734"
+source = "git+https://github.com/automerge/automerge-rs?rev=a28ae6edb6674a12917a5cbe75ab8a385ca78513#a28ae6edb6674a12917a5cbe75ab8a385ca78513"
 dependencies = [
  "automerge-backend",
  "automerge-frontend",
@@ -116,11 +116,12 @@ dependencies = [
 [[package]]
 name = "automerge-backend"
 version = "0.0.1"
-source = "git+https://github.com/automerge/automerge-rs?rev=24dcd9c1e646232850a9a422a9598ff18c350734#24dcd9c1e646232850a9a422a9598ff18c350734"
+source = "git+https://github.com/automerge/automerge-rs?rev=a28ae6edb6674a12917a5cbe75ab8a385ca78513#a28ae6edb6674a12917a5cbe75ab8a385ca78513"
 dependencies = [
  "automerge-protocol",
  "fxhash",
  "hex",
+ "itertools",
  "js-sys",
  "leb128",
  "maplit",
@@ -137,7 +138,7 @@ dependencies = [
 [[package]]
 name = "automerge-frontend"
 version = "0.1.0"
-source = "git+https://github.com/automerge/automerge-rs?rev=24dcd9c1e646232850a9a422a9598ff18c350734#24dcd9c1e646232850a9a422a9598ff18c350734"
+source = "git+https://github.com/automerge/automerge-rs?rev=a28ae6edb6674a12917a5cbe75ab8a385ca78513#a28ae6edb6674a12917a5cbe75ab8a385ca78513"
 dependencies = [
  "automerge-protocol",
  "futures",
@@ -152,7 +153,7 @@ dependencies = [
 [[package]]
 name = "automerge-protocol"
 version = "0.1.0"
-source = "git+https://github.com/automerge/automerge-rs?rev=24dcd9c1e646232850a9a422a9598ff18c350734#24dcd9c1e646232850a9a422a9598ff18c350734"
+source = "git+https://github.com/automerge/automerge-rs?rev=a28ae6edb6674a12917a5cbe75ab8a385ca78513#a28ae6edb6674a12917a5cbe75ab8a385ca78513"
 dependencies = [
  "hex",
  "serde",

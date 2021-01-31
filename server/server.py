@@ -10,13 +10,14 @@ def get_file(filename):
     path: pathlib.Path = pathlib.Path("./data") / filename
     if not path.exists():
         return flask.make_response("not found", 404)
-    return flask.send_from_directory("./data", filename)
+    return flask.send_from_directory("./data", filename, cache_timeout=0)
 
 
 @app.route("/<path:filename>", methods=["POST"])
 def upload_file(filename):
     with open(f"./data/{filename}", "wb") as outfile:
-        outfile.write(flask.request.stream.read())
+        data = flask.request.stream.read()
+        outfile.write(data)
     return "done"
 
 

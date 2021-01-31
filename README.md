@@ -28,11 +28,11 @@ Every implementation in this application is syncing a document that is expected 
 
 ## Walkthrough
 
-There is a javascript todo list implementation in `react-todomvc` and a Rust GTK application (only tested on linux) in `vgtk-todomvc`. Refer to each of those repositories for instructions on running them. We will also need the `automerge` CLI installed, which can be done with `cargo install --git https://github.com/automerge/automerge-rs --rev 24dcd9c1e646232850a9a422a9598ff18c350734` (provided you have [setup](https://doc.rust-lang.org/book/ch14-04-installing-binaries.html) `cargo install` to put binaries on your path).
+There is a javascript todo list implementation in `react-todomvc` and a Rust GTK application (only tested on linux) in `vgtk-todomvc`. Refer to each of those repositories for instructions on running them. We will also need the `automerge` CLI installed, which can be done with `cargo install --git https://github.com/automerge/automerge-rs --rev a28ae6edb6674a12917a5cbe75ab8a385ca78513` (provided you have [setup](https://doc.rust-lang.org/book/ch14-04-installing-binaries.html) `cargo install` to put binaries on your path).
 
 You'll also need the server running, refer to `./server/README.md` for details.
 
 So, let's assume we now have our simple HTTP sync server running and have a play.
 
-To be continued ...
+First off, let's open the react implementation:
 
