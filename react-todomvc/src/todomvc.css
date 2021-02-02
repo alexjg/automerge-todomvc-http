@@ -539,14 +539,19 @@ hr {
 	}
 }
 
-.peers {
+.remotes {
   flex-grow: 0;
   height: 100%;
   margin: 140px;
 
 }
 
-.peers .new-peer {
+.remotes > .new-remote {
+    display: flex;
+    flex-direction: row;
+}
+
+.remotes > .new-remote > .new-remote-input {
 	position: relative;
 	margin: 0;
 	width: 100%;
@@ -562,25 +567,39 @@ hr {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.peer > .peer-url > .url-container {
+.remotes > .new-remote > button {
+    margin-left: 10px;
+	padding: 5px;
+	border: 2px;
+	background: white;
+	font-size: 100%;
+	vertical-align: baseline;
+	font-family: inherit;
+	font-weight: inherit;
+	color: inherit;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.remote > .remote-url > .url-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.peer > .peer-url > .url-container > .url {
+.remote > .remote-url > .url-container > .url {
     font-family: monospace;
     margin-left: 10px;
 }
 
-.peer > .peer-url {
+.remote > .remote-url {
     display: flex;
 }
 
-.peer > .peer-controls {
+.remote > .remote-controls {
     display: flex;
 }
-.peer > .peer-controls > button {
+.remote > .remote-controls > button {
 	margin-right: 10px;
 	padding: 5px;
 	border: 2px;

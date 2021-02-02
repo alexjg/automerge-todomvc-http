@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Todos } from "./Todos";
 import { useAutomergeTodos, AutomergeTodosHooks } from "./automerge_hooks"
-import { Peers } from "./Peers"
+import { Remotes } from "./Remotes"
 
 export const App = () => {
   const props: AutomergeTodosHooks = useAutomergeTodos();
@@ -9,7 +9,7 @@ export const App = () => {
     <div className="container">
       <Todos {...props}>
       </Todos>
-      <Peers onFetchUrl={props.loadRemoteTodos} onPushToUrl={props.pushTodosToRemote}/>
+      <Remotes onFetchUrl={props.loadRemoteTodos} onPushToUrl={props.pushTodosToRemote}/>
     </div>
   );
 };

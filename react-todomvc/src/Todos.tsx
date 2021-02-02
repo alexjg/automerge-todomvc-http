@@ -4,7 +4,7 @@ import cn from 'classnames';
 //import type { Doc } from "automerge";
 //import { initChange } from "./init_doc";
 import "./todomvc.css"
-export { Peers } from "./Peers"
+export { Remotes } from "./Remotes"
 import type { TodoType } from "./todo"
 
 
