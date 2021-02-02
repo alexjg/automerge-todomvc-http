@@ -569,16 +569,6 @@ hr {
 
 .remotes > .new-remote > button {
     margin-left: 10px;
-	padding: 5px;
-	border: 2px;
-	background: white;
-	font-size: 100%;
-	vertical-align: baseline;
-	font-family: inherit;
-	font-weight: inherit;
-	color: inherit;
-	-webkit-appearance: none;
-	appearance: none;
 }
 
 .remote > .remote-url > .url-container {
@@ -601,6 +591,9 @@ hr {
 }
 .remote > .remote-controls > button {
 	margin-right: 10px;
+}
+
+button {
 	padding: 5px;
 	border: 2px;
 	background: white;
@@ -611,6 +604,9 @@ hr {
 	color: inherit;
 	-webkit-appearance: none;
 	appearance: none;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 }
+
+button:active {
+    background-color: grey;
+}
+

@@ -12,8 +12,8 @@ use vgtk::{ext::*, gtk, gtk_if, on_signal, Component, UpdateAction, VNode};
 use strum_macros::{Display, EnumIter};
 
 use crate::about::AboutDialog;
-use crate::items::{Item, Items};
 use crate::radio::Radio;
+use crate::items::{Item, Items};
 
 use maplit::hashmap;
 
@@ -31,18 +31,18 @@ impl Default for Filter {
 }
 
 #[derive(Clone, Debug)]
-pub struct Peer {
+pub struct Remote {
     url: String,
 }
 
-impl Peer {
+impl Remote {
     fn render(&self, index: usize) -> VNode<Model> {
         let url = self.url.clone();
         gtk!{
             <Box spacing=10 orientation=Orientation::Horizontal>
                 <Label label=self.url.to_string() />
-                <Button label="pull" on clicked=|_| { Msg::PullFromPeer { peer_index: index }}/>
-                <Button label="push" on clicked=|_| { Msg::PushToPeer { peer_index: index }}/>
+                <Button label="pull" on clicked=|_| { Msg::PullFromRemote { remote_index: index }}/>
+                <Button label="push" on clicked=|_| { Msg::PushToRemote { remote_index: index }}/>
             </Box>
         }
     }
@@ -53,14 +53,15 @@ pub struct Model {
     filter: Filter,
     file: Option<File>,
     clean: bool,
-    peers: Vec<Peer>,
+    remotes: Vec<Remote>,
     backend: Arc<Mutex<automerge::Backend>>,
     frontend: Arc<Mutex<automerge::Frontend>>,
+    new_remote_buffer: EntryBuffer,
 }
 
 impl std::fmt::Debug for Model {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Model(items: {:?}, filter: {:?}, file: {:?}, clean: {:?}, peers: {:?})", self.items(), self.filter, self.file, self.clean, self.peers)
+        write!(f, "Model(items: {:?}, filter: {:?}, file: {:?}, clean: {:?}, remotes: {:?})", self.items(), self.filter, self.file, self.clean, self.remotes)
     }
 }
 
@@ -75,9 +76,10 @@ impl Default for Model {
             filter: Filter::All,
             file: None,
             clean: true,
-            peers: Vec::new(),
+            remotes: Vec::new(),
             backend: Arc::new(Mutex::new(backend)),
             frontend: Arc::new(Mutex::new(frontend)),
+            new_remote_buffer: EntryBuffer::new(None),
         }
     }
 }
@@ -108,7 +110,7 @@ impl Model {
 
     fn main_panel(&self) -> VNode<Model> {
         gtk! {
-            <Box orientation=Orientation::Horizontal>
+            <Box orientation=Orientation::Horizontal spacing=10>
                 <Box spacing=10 orientation=Orientation::Vertical Box::fill=true Box::expand=true>
                     <Box spacing=10 orientation=Orientation::Horizontal Box::expand=false>
                         <Button image="edit-select-all" relief=ReliefStyle::Half
@@ -143,19 +145,20 @@ impl Model {
                     </Box>
                 </Box>
                 <Box spacing=10 orientation=Orientation::Vertical>
-                    <Label label="Peers" width_chars=50/>  
+                    <Label label="Remotes" width_chars=50/>  
                     <Box spacing=10 orientation=Orientation::Horizontal Box::expand=false>
-                        <Entry placeholder_text="Peer url"
+                        <Entry placeholder_text="Remote url"
+                             buffer=self.new_remote_buffer.clone() 
                             Box::expand=true 
                             on activate=|entry| {
-                                let label = entry.get_text().to_string();
-                                entry.select_region(0, label.len() as i32);
-                                Msg::AddPeer {
-                                    url: label
-                                }
+                                Msg::AddRemote
                             } />
+                        <Button label="Add" 
+                                on clicked=|e|{
+                                    Msg::AddRemote 
+                                } />
                     </Box>
-                    {self.peers.iter().enumerate().map(|(index, peer)| peer.render(index))}
+                    {self.remotes.iter().enumerate().map(|(index, remote)| remote.render(index))}
                 </Box>
             </Box>
         }
@@ -173,9 +176,9 @@ pub enum Msg {
     ClearCompleted,
     Exit,
     MenuAbout,
-    AddPeer { url:  String },
-    PullFromPeer { peer_index: usize},
-    PushToPeer { peer_index: usize},
+    AddRemote,
+    PullFromRemote { remote_index: usize},
+    PushToRemote { remote_index: usize},
     PullComplete,
 }
 
@@ -329,12 +332,16 @@ impl Component for Model {
                 AboutDialog::run();
                 return UpdateAction::None;
             }
-            Msg::AddPeer { url } => {
-                self.peers.push(Peer{url});
+            Msg::AddRemote => {
+                let url = self.new_remote_buffer.get_text();
+                if url.len() > 0 {
+                    self.new_remote_buffer.set_text("");
+                    self.remotes.push(Remote{url});
+                }
             }
-            Msg::PullFromPeer { peer_index } => {
-                let peer = self.peers.get(peer_index).unwrap();
-                let url = peer.url.clone();
+            Msg::PullFromRemote { remote_index} => {
+                let remote = self.remotes.get(remote_index).unwrap();
+                let url = remote.url.clone();
                 let frontend = self.frontend.clone();
                 let backend = self.backend.clone();
                 let url: reqwest::Url = reqwest::Url::from_str(url.as_str()).unwrap();
@@ -348,12 +355,12 @@ impl Component for Model {
                     Msg::PullComplete
                 })
             }
-            Msg::PushToPeer{ peer_index } => {
-                let peer = self.peers.get(peer_index).unwrap();
+            Msg::PushToRemote{ remote_index } => {
+                let remote = self.remotes.get(remote_index).unwrap();
                 let backend = self.backend.lock().unwrap();
                 let raw = backend.save().unwrap();
                 let client = reqwest::blocking::Client::new();
-                let url = reqwest::Url::from_str(peer.url.as_str()).unwrap();
+                let url = reqwest::Url::from_str(remote.url.as_str()).unwrap();
                 client.post(url).body(raw).send().unwrap();
             }
             Msg::PullComplete => return UpdateAction::Render
