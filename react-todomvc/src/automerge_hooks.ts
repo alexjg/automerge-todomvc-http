@@ -1,7 +1,6 @@
 import React from 'react';
 import * as automerge from "automerge"
 import type { Doc } from "automerge"
-import { initChange } from "./init_doc";
 import type { TodoType } from "./todo"
 
 // https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php
@@ -17,14 +16,21 @@ function uuid() {
   return uuid;
 }
 
-function initDoc(): Doc<{todos: TodoType[]}> {
-  let doc = automerge.init()
-  return automerge.applyChanges(doc, [initChange]) as Doc<{todos: TodoType[]}>
+type TodoApp = {
+  todos: TodoType[]
+}
+
+function initDoc(): Doc<TodoApp>{
+  let changeFn = (doc: TodoApp) => {
+    doc.todos = []
+  }
+  let doc = automerge.change<Doc<TodoApp>>(automerge.init('0000'), { time: 0 }, changeFn);
+  return doc
 }
 
 
 class AutomergeTodos {
-  private _doc: Doc<{todos: TodoType[]}>
+  private _doc: Doc<TodoApp>
 
   constructor(doc: Doc<{todos: TodoType[]}>) {
     this._doc = doc
@@ -73,10 +79,10 @@ class AutomergeTodos {
     return new AutomergeTodos(newDoc)
   }
 
-  async applyChanges(changes: Uint8Array): Promise<AutomergeTodos> {
-    const otherDoc = automerge.load(changes)
+  async applyChanges(doc: automerge.BinaryDocument): Promise<AutomergeTodos> {
+    const otherDoc = automerge.load(doc)
     const otherChanges = automerge.getAllChanges(otherDoc)
-    const newDoc = automerge.applyChanges(this._doc, otherChanges)
+    const [newDoc, patch] = automerge.applyChanges(this._doc, otherChanges)
     return new AutomergeTodos(newDoc)
   }
 
@@ -112,7 +118,7 @@ export function useAutomergeTodos(): AutomergeTodosHooks {
       const response = await fetch(url)
       const respbuffer = await response.arrayBuffer()
       const view = new Uint8Array(respbuffer)
-      setTodoDoc(await todoDoc.applyChanges(view))
+      setTodoDoc(await todoDoc.applyChanges(view as automerge.BinaryDocument))
     },
     pushTodosToRemote: async (url: string) => {
       const changes = todoDoc.getChanges()
