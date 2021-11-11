@@ -24,7 +24,12 @@ function initDoc(): Doc<TodoApp>{
   let changeFn = (doc: TodoApp) => {
     doc.todos = []
   }
-  let doc = automerge.change<Doc<TodoApp>>(automerge.init('0000'), { time: 0 }, changeFn);
+  let change = automerge.getLastLocalChange(
+    automerge.change<Doc<TodoApp>>(automerge.init('0000'), { time: 0 }, changeFn)
+  );
+  let [doc, patch] = automerge.applyChanges<TodoApp>(
+    automerge.init(), [change]
+  )
   return doc
 }
 
